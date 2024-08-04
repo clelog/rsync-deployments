@@ -16,8 +16,8 @@ set -eu
 LEGACY_RSA_HOSTKEYS="-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa"
 LEGACY_RSA_HOSTKEYS=$([ "$INPUT_LEGACY_ALLOW_RSA_HOSTKEYS" = "true" ] && echo "$LEGACY_RSA_HOSTKEYS" || echo "")
 
-if [ ! -z "$(echo "$INPUT_REMOTE_PASSWORD" | awk '{$1=$1};1')" ]; then
-    SSHPASS='sshpass -p "$INPUT_REMOTE_PASSWORD"'
+if [ ! -z "$(echo "$INPUT_REMOTE_PASS" | awk '{$1=$1};1')" ]; then
+    SSHPASS="sshpass -p \"$INPUT_REMOTE_PASS\""
 fi
 
 SWITCHES="$INPUT_SWITCHES"
