@@ -16,8 +16,12 @@ set -eu
 LEGACY_RSA_HOSTKEYS="-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa"
 LEGACY_RSA_HOSTKEYS=$([ "$INPUT_LEGACY_ALLOW_RSA_HOSTKEYS" = "true" ] && echo "$LEGACY_RSA_HOSTKEYS" || echo "")
 
+if [ ! -z "$(echo "$INPUT_REMOTE_PASSWORD" | awk '{$1=$1};1')" ]; then
+    SSHPASS='sshpass -p "$INPUT_REMOTE_PASSWORD"'
+fi
+
 SWITCHES="$INPUT_SWITCHES"
-RSH="ssh -o StrictHostKeyChecking=no $LEGACY_RSA_HOSTKEYS -p $INPUT_REMOTE_PORT $INPUT_RSH"
+RSH="$SSHPASS ssh -o StrictHostKeyChecking=no $LEGACY_RSA_HOSTKEYS -p $INPUT_REMOTE_PORT $INPUT_RSH"
 LOCAL_PATH="$GITHUB_WORKSPACE/$INPUT_PATH"
 DSN="$INPUT_REMOTE_USER@$INPUT_REMOTE_HOST"
 
